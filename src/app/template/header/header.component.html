@@ -1,14 +1,9 @@
 <header class="navbar navbar-expand-lg pe-5 ps-5">
     <div class="container-fluid">
         <h1 class="navbar-brand">Conversor de Moedas</h1>
-        <button type="button" class="menu-dropdown navbar-toggler" data-bs-toggle="collapse"
-            data-bs-target="#navbar-collapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbar-collapse">
-            <ul class="menu navbar-nav">
-                <li class="menu__item nav-link" *ngFor="let item of menu_itens" routerLink="{{item | lowercase}}">{{item}}</li>
-            </ul>
-        </div>
+        <ul class="navbar-collapse menu navbar-nav">
+            <li class="menu__item nav-link" *ngFor="let item of menu_itens" routerLink="{{item | lowercase}}">{{item}}
+            </li>
+        </ul>
     </div>
 </header>
