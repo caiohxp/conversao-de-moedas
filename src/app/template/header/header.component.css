@@ -1,0 +1,14 @@
+.navbar{
+    background-color: var(--c1);
+    color: var(--base);
+}
+.navbar-brand{
+    color: var(--base);
+}
+.menu__item{
+    color: var(--base);
+}
+.menu__item:hover{
+    cursor: pointer;
+    color: var(--c4);
+}

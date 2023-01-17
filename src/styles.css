@@ -1,8 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+:root{
+    --c1: #264653;
+    --c2: #2A9D8F;
+    --c3: #E9C46A;
+    --c4: #B4C2C6;
+    --c5: #F4A261;
+    --base: #E3EDF5;
+}
 *{
     margin: 0px;
     padding: 0px;
     text-decoration: none;
     box-sizing: border-box;
     list-style: none;
+    color: var(--base);
 }
