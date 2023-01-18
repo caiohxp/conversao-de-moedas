@@ -5,12 +5,17 @@
     --c3: #E9C46A;
     --c4: #B4C2C6;
     --c5: #F4A261;
+    --c6: #003954;
     --base: #E3EDF5;
 }
 *{
     margin: 0px;
     padding: 0px;
-    text-decoration: none;
     box-sizing: border-box;
-    list-style: none;
+}
+li{
+    list-style: none
+}
+a{
+    text-decoration: none;
 }
