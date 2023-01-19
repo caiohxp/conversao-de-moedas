@@ -19,3 +19,8 @@ li{
 a{
     text-decoration: none;
 }
+section{
+    display: grid;
+    place-items: center;
+    background-color: var(--c6);
+}

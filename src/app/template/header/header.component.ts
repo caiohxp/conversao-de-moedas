@@ -7,4 +7,10 @@ import { Component } from '@angular/core';
 })
 export class HeaderComponent {
   menu_itens = ["Home", "List", "Converter"];
+  menuItemColor(item: string | null | undefined){
+    const itensMenu : string | null | undefined = document.querySelector('.menu__item')?.textContent;
+    console.log(item,itensMenu)
+    console.log(typeof(item), typeof(itensMenu))
+    console.log(itensMenu == item? itensMenu:"Outro")
+  }
 }

@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <h1 class="navbar-brand">Conversor de Moedas</h1>
         <ul class="navbar-collapse menu navbar-nav">
-            <li class="menu__item nav-link" *ngFor="let item of menu_itens" routerLink="{{item | lowercase}}">{{item}}
+            <li class="menu__item nav-link" *ngFor="let item of menu_itens" (click)="menuItemColor(item)" routerLink="{{item | lowercase}}">{{item}}
             </li>
         </ul>
     </div>

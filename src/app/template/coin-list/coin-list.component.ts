@@ -7,15 +7,45 @@ import { Component } from '@angular/core';
 })
 export class CoinListComponent {
 
-}
-// var requestURL = 'https://api.exchangerate.host/symbols';
-// var request = new XMLHttpRequest();
-// request.open('GET', requestURL);
-// request.responseType = 'json';
-// request.send();
+  callSymbols(): Object[] {
+    var requestURL = 'https://api.exchangerate.host/symbols';
+    var request = new XMLHttpRequest();
+    request.open('GET', requestURL);
+    request.responseType = 'json';
+    request.send();
 
-// request.onload = function() {
-//   var response = request.response;
-//   console.log(response.rates);
+    request.onload = function () {
+      var response = request.response;
+      return Object.values(response.symbols);
+    }
+    return Object.values(request.response);
+  }
+}
+// const getSymbols = () => {
+
+//   var requestURL = 'https://api.exchangerate.host/symbols';
+//   var request = new XMLHttpRequest();
+//   request.open('GET', requestURL);
+//   request.responseType = 'json';
+//   request.send();
+
+//   request.onload = function () {
+//     return Object.values(request.response.symbols);
+//   }
 // }
-    
+// const getSymbols = async () => {
+//   fetch("https://api.exchangerate.host/symbols")
+//     .then((response) => response.json())
+//     .then((responseJson) => {
+//       return Object.values(responseJson.symbols)
+//     })
+
+// }
+// const getContatos = () => {
+//   fetch("https://api.exchangerate.host/symbols")
+//     .then((response) => response.json())
+//     .then((responseJson) => {
+//       return responseJson
+//     })
+// }
+// console.log(getSymbols)
