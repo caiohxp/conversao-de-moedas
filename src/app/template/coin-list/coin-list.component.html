@@ -1,14 +1,49 @@
-<section>
-    <div class="container">
-        <table class="mb-4">
+<section class="p-4">
+    <div class="container main-container p-3 flex-column d-flex align-items-center">
+        <div class="d-flex justify-content-between align-items-center flex-wrap w-100">
+            <input id="input-filtro" type="text">
+            <select class="form-select" aria-label="Campo select">
+                <option selected>Campo</option>
+                <option value="s">Sigla</option>
+                <option value="n">Nome</option>
+            </select>
+            <select class="form-select" aria-label="Ordem select">
+                <option selected>Ordem</option>
+                <option value="c">Crescente</option>
+                <option value="d">Decrescente</option>
+            </select>
+            <button (click)="SemFiltro()" class="btn btn-primary">Atualizar</button>
+            <button (click)="filtrarSigla()" class="btn btn-primary">Filtrar</button>
+        </div>
+        <table class="table">
             <thead>
                 <tr>
-                    <th>Remetente</th>
-                    <th>Assunto</th>
+                    <th>Sigla</th>
+                    <th>Nome da Moeda</th>
                 </tr>
             </thead>
             <tbody>
+                <tr *ngFor="let symbol of filtrarMoedas(arraySymbols)">
+                    <td>{{symbol.code}}</td>
+                    <td>{{symbol.description}}</td>
+                </tr>
             </tbody>
         </table>
+        <!-- <table mat-table [dataSource]="arraySymbols" class="mat-elevation-z8">
+        
+            <ng-container matColumnDef="sigla">
+                <th mat-header-cell *matHeaderCellDef> Sigla </th>
+                <td mat-cell *matCellDef="let symbol"> {{symbol.code}} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef> Descrição</th>
+                <td mat-cell *matCellDef="let symbol"> {{symbol.description}} </td>
+            </ng-container>
+        
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table> -->
+
     </div>
 </section>

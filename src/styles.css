@@ -19,8 +19,18 @@ li{
 a{
     text-decoration: none;
 }
+body{
+    background-color: var(--c6);
+}
 section{
     display: grid;
     place-items: center;
-    background-color: var(--c6);
+}
+.main-container{
+    background-color: var(--c2);
+    border-radius: 10px;
+    border: solid 5px var(--base);
+    width: 40rem;
+    color: var(--base);
+    flex-wrap: wrap;
 }

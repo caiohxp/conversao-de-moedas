@@ -6,7 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./coin-converter.component.css']
 })
 export class CoinConverterComponent {
-
+  arraySymbols = [{code: "BRA", description: "Brasil"}, {code: "BRA", description: "Brasil"}, {code: "BRA", description: "Brasil"}]
+  displayedColumns = ['code', 'description'];
 }
 // var requestURL = 'https://api.exchangerate.host/latest';
 // var request = new XMLHttpRequest();

@@ -1,26 +1,21 @@
-.container{
-    background-color: var(--c2);
-    border-radius: 10px;
-    border: solid 5px var(--c3);
-    width: 30rem;
-    color: var(--c3);
-}
 .link-container{
     color: var(--c1);
     text-decoration:underline;
 }
 .link-container:hover{
     color: var(--c5);
+    transition: 0.3s;
 }
 .btnStarted{
     background-color: var(--c6);
     color: var(--c2);
     padding: 15px;
-    border: solid 2px var(--c3);
+    border: solid 2px var(--base);
     border-radius: 20px
 }
 .btnStarted:hover{
     color: var(--c5);
     border-color: var(--c5);
     background-color: var(--c1);
+    transition: 0.3s;
 }

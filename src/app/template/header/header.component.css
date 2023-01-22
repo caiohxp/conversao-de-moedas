@@ -10,5 +10,5 @@
 }
 .menu__item:hover{
     cursor: pointer;
-    color: var(--c4);
+    color: var(--c3);
 }

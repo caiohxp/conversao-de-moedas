@@ -1,0 +1,7 @@
+table {
+  width: 90%;
+  color: var(--base);
+}
+.form-select{
+  width: 18%;
+}
