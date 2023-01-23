@@ -5,3 +5,6 @@ table {
 .form-select{
   width: 18%;
 }
+.form-select:nth-child(3){
+  width: 13%;
+}
