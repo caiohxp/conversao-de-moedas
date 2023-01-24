@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Observable, observable } from 'rxjs';
-import { Filtro } from './filtro';
 
 @Component({
   selector: 'app-coin-list',
@@ -14,7 +13,6 @@ export class CoinListComponent implements OnInit {
   arraySymbols: Array<any>;
   arraySymbol: Symbol[];
   displayedColumns = ['code', 'description'];
-  tipoDeFiltro: Filtro;
   constructor(private http: HttpClient) {
 
   }
@@ -27,24 +25,31 @@ export class CoinListComponent implements OnInit {
   }
   filtrarSigla() {
   }
+  X(){
+
+  }
   filtrarNome() {
     
   }
-  filtrarMoedas(symbol: any[]) {
+  filtrarMoedas() {
     const input = (<HTMLInputElement>document.querySelector('#input-filtro')).value;
     const select = document.querySelectorAll('.form-select');
-    const selectCampo = (<HTMLInputElement>select[0]).value;
-    const selectOrdem = (<HTMLInputElement>select[1]).value;
-    const selectPaginacao = parseInt((<HTMLInputElement>select[2]).value);
+    var campo: string = "";
+    const radioCampo = document.getElementsByName('flexRadioCampo');
+    radioCampo.forEach(c => campo = (<HTMLInputElement>c).checked?(<HTMLInputElement>c).value : campo);
+    var ordem: string = "";
+    const radioOrdem = document.getElementsByName('flexRadioOrdem');
+    radioOrdem.forEach(c => ordem = (<HTMLInputElement>c).checked?(<HTMLInputElement>c).value : ordem)
+    const selectPaginacao = parseInt((<HTMLInputElement>select[0]).value);
     
     let array: any[];
-    if (selectCampo == 's')
-      array = symbol.filter((s, i) => s.code.includes(input.toUpperCase()) && s.code.charAt(0) === input.toUpperCase().charAt(0) && i < selectPaginacao);
-    else if (selectCampo == 'n')
-      array = symbol.filter((s, i) => s.description.toLowerCase().includes(input.toLowerCase()) && i < selectPaginacao);
-    else array = symbol.filter((s, i) => i < selectPaginacao);
-    if(selectOrdem == 'c') array.sort();
-    else if(selectOrdem == 'd') array.sort().reverse();
+    if (campo == 's')
+      array = this.arraySymbols.filter(s => s.code.includes(input.toUpperCase()) && s.code.charAt(0) === input.toUpperCase().charAt(0)).filter((f,i) => i < selectPaginacao);
+    else if (campo == 'n')
+      array = this.arraySymbols.filter(s => s.description.toLowerCase().includes(input.toLowerCase())).filter((f,i) => i < selectPaginacao);
+    else array = this.arraySymbols.filter((s, i) => i < selectPaginacao);
+    if(ordem == 'c') array.sort();
+    else if(ordem == 'd') array.sort().reverse();
 
     return array;
   }

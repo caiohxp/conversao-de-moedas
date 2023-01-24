@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 :root{
     --c1: #264653;
     --c2: #2A9D8F;
@@ -34,3 +35,5 @@ section{
     color: var(--base);
     flex-wrap: wrap;
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
