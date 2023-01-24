@@ -2,9 +2,7 @@ table {
   width: 90%;
   color: var(--base);
 }
-.form-select{
-  width: 18%;
-}
-.form-select:nth-child(3){
+
+.form-select {
   width: 13%;
 }
