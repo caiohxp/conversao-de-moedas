@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
-:root{
+
+:root {
     --c1: #264653;
     --c2: #2A9D8F;
     --c3: #E9C46A;
@@ -9,25 +10,36 @@
     --c6: #003954;
     --base: #E3EDF5;
 }
-*{
+
+[data-bs-theme="white"]{
+    color: var(--base);
+    border-color: var(--base);
+}
+
+* {
     margin: 0px;
     padding: 0px;
     box-sizing: border-box;
 }
-li{
+
+li {
     list-style: none
 }
-a{
+
+a {
     text-decoration: none;
 }
-body{
+
+body {
     background-color: var(--c6);
 }
-section{
+
+section {
     display: grid;
     place-items: center;
 }
-.main-container{
+
+.main-container {
     background-color: var(--c2);
     border-radius: 10px;
     border: solid 5px var(--base);
@@ -35,5 +47,13 @@ section{
     color: var(--base);
     flex-wrap: wrap;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
