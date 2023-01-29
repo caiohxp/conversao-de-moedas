@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -14,6 +15,8 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSortModule} from '@angular/material/sort';
+import {MatRadioModule} from '@angular/material/radio';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
@@ -34,7 +37,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatButtonModule,
     MatInputModule,
     MatPaginatorModule,
-    BrowserAnimationsModule
+    MatSortModule,
+    MatRadioModule,
+    BrowserAnimationsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

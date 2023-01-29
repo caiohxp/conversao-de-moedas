@@ -4,6 +4,7 @@
 }
 .navbar-brand{
     color: var(--base);
+    width: 265px;
 }
 .menu__item{
     color: var(--base);

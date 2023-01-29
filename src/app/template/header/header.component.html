@@ -1,6 +1,8 @@
 <header class="navbar navbar-expand-lg pe-5 ps-5">
     <div class="container-fluid">
-        <h1 class="navbar-brand">Conversor de Moedas</h1>
+        <div class="navbar-brand d-flex align-items-center justify-content-between">
+            <mat-icon aria-hidden="false" aria-label="search-icon" fontIcon="paid" matSuffix></mat-icon>
+            <div class="fs-4">Conversor de Moedas</div></div>
         <ul class="navbar-collapse menu navbar-nav">
             <li class="menu__item nav-link" *ngFor="let item of menu_itens" (click)="menuItemColor(item)" routerLink="{{item | lowercase}}">{{item}}
             </li>
