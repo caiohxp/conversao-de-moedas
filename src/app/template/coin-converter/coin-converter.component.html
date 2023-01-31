@@ -1,25 +1,38 @@
-<button mat-button color="primary">Filtrar</button>
-<p>
-    <mat-form-field appearance="fill">
-        <mat-label>Procurar</mat-label>
-        <input matInput type="text" id="input-filtro">
-        <mat-icon aria-hidden="false" aria-label="search-icon" fontIcon="search"></mat-icon>
-        <mat-hint>Hint</mat-hint>
-    </mat-form-field>
-</p>
-<p>
-    <mat-form-field appearance="fill">
-      <mat-label>Fill form field</mat-label>
-      <input matInput placeholder="Placeholder">
-      <mat-icon>sentiment_very_satisfied</mat-icon>
-      <mat-hint>Hint</mat-hint>
-    </mat-form-field>
-  </p>
-  <p>
-    <mat-form-field appearance="outline">
-      <mat-label>Outline form field</mat-label>
-      <input matInput placeholder="Placeholder">
-      <mat-icon matSuffix>search</mat-icon>
-      <mat-hint>Hint</mat-hint>
-    </mat-form-field>
-  </p>
+<section class="p-4">
+  <div class="container main-container p-3 flex-column d-flex">
+    <h2>Conversor</h2>
+    <mat-card>
+      <mat-card-header>
+        <mat-label>Data da Cotação</mat-label>
+        <input mat-input type="date">
+      </mat-card-header>
+      <mat-card-actions>
+        <input mat-input type="text">
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Dropdown button
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </div>
+        <button mat-mini-fab color="primary"><mat-icon aria-hidden="false" fontIcon="sync_alt"
+            matSuffix></mat-icon></button>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Dropdown button
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</section>

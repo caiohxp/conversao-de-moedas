@@ -15,7 +15,7 @@ import { MatSort, MatSortHeader } from '@angular/material/sort';
 export class CoinListComponent implements AfterViewInit {
 
   displayedColumns = ['code', 'description'];
-  dataSource: any;
+  dataSource: MatTableDataSource<any>;
   constructor(private listService: ListService) {
   }
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -28,6 +28,8 @@ export class CoinListComponent implements AfterViewInit {
       this.dataSource = new MatTableDataSource(Object.values(s.symbols));
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.matSort;
+      console.log(typeof(Object.values(s.symbols)));
+      
     });
   }
   filtrarMoedas($event: any){

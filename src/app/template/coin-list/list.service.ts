@@ -12,4 +12,4 @@ export class ListService {
   getList(): Observable<any>{
     return this.http.get("https://api.exchangerate.host/symbols");
   }
-}
+} 
