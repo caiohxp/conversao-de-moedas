@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Moeda } from 'src/app/model/moeda';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ import { Observable } from 'rxjs';
 export class ConverterService {
 
   constructor(private http: HttpClient) { }
-  getConverterAPI(): Observable<any>{
+  getList(): Observable<any>{
     return this.http.get("https://api.exchangerate.host/latest");
   }
-}
+} 

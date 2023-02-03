@@ -4,24 +4,28 @@
     <mat-card>
       <mat-card-header>
         <mat-label>Data da Cotação</mat-label>
-        <input mat-input type="date">
+        <input mat-input type="date" value="{{data}}">
       </mat-card-header>
       <mat-card-actions>
-        <input mat-input type="text">
-        <button mat-button class="btn btn-danger" [matMenuTriggerFor]="convertFrom">Convert From<mat-icon aria-hidden="false"
-            fontIcon="expand_more" matSuffix></mat-icon></button>
+        <input mat-input type="number" (keyup)="calc($event)">
+        <button mat-button class="btn btn-danger" [matMenuTriggerFor]="convertFrom">{{moedaOrigem}}<mat-icon
+            aria-hidden="false" fontIcon="expand_more" matSuffix></mat-icon></button>
         <mat-menu #convertFrom="matMenu">
-          <button mat-menu-item>Item 1</button>
-          <button mat-menu-item>Item 2</button>
+          <button mat-menu-item *ngFor="let keyOrigem of arrayRates"
+            (click)="changeNameOrigem(keyOrigem[0])">{{keyOrigem[0]}}</button>
         </mat-menu>
         <button mat-mini-fab color="primary"><mat-icon aria-hidden="false" fontIcon="sync_alt"
             matSuffix></mat-icon></button>
-        <button mat-button class="btn btn-primary" [matMenuTriggerFor]="convertTo">Convert To<mat-icon aria-hidden="false"
-            fontIcon="expand_more" matSuffix></mat-icon></button>
+        <button mat-button class="btn btn-primary" [matMenuTriggerFor]="convertTo">{{moedaDestino}}<mat-icon
+            aria-hidden="false" fontIcon="expand_more" matSuffix></mat-icon></button>
         <mat-menu #convertTo="matMenu">
-          <button mat-menu-item>Item 1</button>
-          <button mat-menu-item>Item 2</button>
+          <mat-radio-group mat-menu-item>
+            <mat-radio-button *ngFor="let keyDestino of arrayKeys" (click)="changeNameDestino(keyDestino)">
+              {{keyDestino}}
+            </mat-radio-button>
+          </mat-radio-group>
         </mat-menu>
+        <input mat-input value="{{resultado}}" type="number">
       </mat-card-actions>
     </mat-card>
   </div>

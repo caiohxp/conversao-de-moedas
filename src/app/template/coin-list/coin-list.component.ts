@@ -28,8 +28,7 @@ export class CoinListComponent implements AfterViewInit {
       this.dataSource = new MatTableDataSource(Object.values(s.symbols));
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.matSort;
-      console.log(typeof(Object.values(s.symbols)));
-      
+      console.log(Object.values(s.symbols));
     });
   }
   filtrarMoedas($event: any){
