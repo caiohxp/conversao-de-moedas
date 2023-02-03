@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { ConverterService } from './converter.service';
+
 
 @Component({
   selector: 'app-coin-converter',
@@ -6,17 +8,24 @@ import { Component } from '@angular/core';
   styleUrls: ['./coin-converter.component.css']
 })
 export class CoinConverterComponent {
-  arraySymbols = [{code: "BRA", description: "Brasil"}, {code: "BRA", description: "Brasil"}, {code: "BRA", description: "Brasil"}]
+  arraySymbols: Array<any>;
   displayedColumns = ['code', 'description'];
-}
-// var requestURL = 'https://api.exchangerate.host/latest';
-// var request = new XMLHttpRequest();
-// request.open('GET', requestURL);
-// request.responseType = 'json';
-// request.send();
 
-// request.onload = function() {
-//   var response = request.response;
-//   console.log(response.rates);
-// }
+  constructor(private convertAPI: ConverterService){}
+  NgAfterViewInit(){
+    console.log(3);
     
+    console.log(this.convertAPI.getConverterAPI());
+    
+    this.fetchAPI()
+  }
+  fetchAPI(){
+    console.log();
+    
+    this.convertAPI.getConverterAPI().subscribe(s => {
+      console.log(s);
+      
+    });
+  }
+
+}

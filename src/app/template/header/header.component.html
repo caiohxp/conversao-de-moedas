@@ -4,7 +4,7 @@
             <mat-icon aria-hidden="false" aria-label="search-icon" fontIcon="paid" matSuffix></mat-icon>
             <div class="fs-4">Conversor de Moedas</div></div>
         <ul class="navbar-collapse menu navbar-nav">
-            <li class="menu__item nav-link" *ngFor="let item of menu_itens" (click)="menuItemColor(item)" routerLink="{{item | lowercase}}">{{item}}
+            <li class="menu__item nav-link" *ngFor="let item of menu_itens" routerLink="{{item | lowercase}}">{{item}}
             </li>
         </ul>
     </div>
