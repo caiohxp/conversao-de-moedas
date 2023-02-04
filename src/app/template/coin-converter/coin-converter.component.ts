@@ -13,11 +13,11 @@ export class CoinConverterComponent implements OnInit {
   arrayKeys: Array<any>;
   arrayRates: Array<any>;
   arraySymbols: Array<any>;
-  arrayMoedas: Array<any>;
+  arrayMoedas: Array<Object>;
   data: Date;
-  resultado: string;
-  moedaOrigem: string = "Moeda Origem";
-  moedaDestino: string = "Moeda Destino";
+  resultado: number;
+  moedaOrigem: Moeda = {code: "EUR", value: 1};
+  moedaDestino: Moeda = {code: "BRA", value: 5};
   displayedColumns = ['code', 'description'];
 
   constructor(private convertService: ConverterService, private listService: ListService) { }
@@ -47,15 +47,21 @@ export class CoinConverterComponent implements OnInit {
       return x;
     })
     
-  }
-  changeNameOrigem(nome: string) {
-    this.moedaOrigem = nome;
     
   }
-  changeNameDestino(nome: string) {
-    this.moedaDestino = nome;
+  changeNameOrigem(a: Array<any>) {
+    console.log(a[1]);
+    
+    this.moedaOrigem = {code: a[0], value: a[1]};
+    console.log(this.arrayMoedas);
+    
+    
+  }
+  changeNameDestino(a: Array<any>) {
+    this.moedaDestino = {code: a[0], value: a[1]};
   }
   calc($event: any){
-    this.resultado = $event.target.value;
+    this.resultado = ($event.target.value/this.moedaOrigem.value) * this.moedaDestino.value;
+    
   }
 }
