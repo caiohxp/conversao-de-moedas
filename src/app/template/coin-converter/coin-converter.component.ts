@@ -10,58 +10,50 @@ import { Moeda } from 'src/app/model/moeda';
   styleUrls: ['./coin-converter.component.css']
 })
 export class CoinConverterComponent implements OnInit {
-  arrayKeys: Array<any>;
-  arrayRates: Array<any>;
   arraySymbols: Array<any>;
-  arrayMoedas: Array<Object>;
+  convert: any;
   data: Date;
+  entrada: number;
   resultado: number;
-  moedaOrigem: Moeda = {code: "EUR", value: 1};
-  moedaDestino: Moeda = {code: "BRA", value: 5};
-  displayedColumns = ['code', 'description'];
+  moedaOrigem = ['USD', 'United States Dollar'];
+  moedaDestino = ["BRL, Brazilian Real"];
 
   constructor(private convertService: ConverterService, private listService: ListService) { }
-  ngOnInit() { this.fetchMoedas();}
-  fetchAPI() {
-    this.convertService.getList().subscribe(s => {
+  ngOnInit() { this.fetchAPIConvert(); this.fetchListSymbols(); }
+  fetchAPIConvert() {
+    this.convertService.getConvert().subscribe(s => {
+      this.convert = s;
       this.data = s.date;
-      this.arrayKeys = Object.keys(s.rates);
-      this.arrayRates = Object.entries(s.rates);
-      console.log(this.arrayRates);
-
+      this.entrada = s.query.amount;
+      this.resultado = s.result;
     });
+  }
+  fetchListSymbols() {
     this.listService.getList().subscribe(l => {
-      this.arraySymbols = Object.values(l.symbols)
-      console.log((this.arraySymbols));
-
+      this.arraySymbols = Object.values(l.symbols);
     });
   }
-  fetchMoedas() {
-    this.fetchAPI()
-    this.arrayMoedas = this.arrayRates.map(r => {
-      let x: any;
-      this.arraySymbols.forEach(s => {
-        if (s.code == r[0])
-          x = { code: s.code, description: s.description, value: r[1] }
-      })
-      return x;
-    })
-    
-    
+  changeNameOrigem(code: string, nome: string) {
+    this.moedaOrigem = [code, nome];
+    this.convertService.codeFrom = code;
   }
-  changeNameOrigem(a: Array<any>) {
-    console.log(a[1]);
-    
-    this.moedaOrigem = {code: a[0], value: a[1]};
-    console.log(this.arrayMoedas);
-    
-    
+  changeNameDestino(code: string, nome: string) {
+    this.moedaDestino = [code, nome];;
+    this.convertService.codeTo = code;
+
   }
-  changeNameDestino(a: Array<any>) {
-    this.moedaDestino = {code: a[0], value: a[1]};
+  toggle() {
+    let toggleMoeda = this.moedaOrigem;
+    this.moedaOrigem = this.moedaDestino;
+    this.moedaDestino = toggleMoeda;
+    this.convertService.codeFrom = this.moedaOrigem[0];
+    this.convertService.codeTo = this.moedaDestino[0];
   }
-  calc($event: any){
-    this.resultado = ($event.target.value/this.moedaOrigem.value) * this.moedaDestino.value;
-    
+  calc($event: any) {
+    this.convertService.valueAmount = $event.target.value;
+  }
+  converter() {
+    this.fetchAPIConvert();
+    this.fetchAPIConvert();
   }
 }

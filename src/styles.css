@@ -52,3 +52,6 @@ body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+.mdc-text-field{
+    margin-bottom: -1.25em !important;
+}

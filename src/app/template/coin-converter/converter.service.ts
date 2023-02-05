@@ -7,9 +7,11 @@ import { Moeda } from 'src/app/model/moeda';
   providedIn: 'root'
 })
 export class ConverterService {
-
+  codeFrom: string = 'USD';
+  codeTo: string = 'BRL';
+  valueAmount: number = 1;
   constructor(private http: HttpClient) { }
-  getList(): Observable<any>{
-    return this.http.get("https://api.exchangerate.host/latest");
+  getConvert(): Observable<any>{
+    return this.http.get(`https://api.exchangerate.host/convert?from=${this.codeFrom}&to=${this.codeTo}&amount=${this.valueAmount}`);
   }
 } 
