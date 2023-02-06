@@ -1,8 +1,12 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { ConverterService } from './converter.service';
 import { ListService } from '../coin-list/list.service';
 import { Moeda } from 'src/app/model/moeda';
-
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogLimparComponent } from './dialog-limpar/dialog-limpar.component';
 
 @Component({
   selector: 'app-coin-converter',
@@ -10,22 +14,30 @@ import { Moeda } from 'src/app/model/moeda';
   styleUrls: ['./coin-converter.component.css']
 })
 export class CoinConverterComponent implements OnInit {
-  arraySymbols: Array<any>;
+  arraySymbols: Array<Moeda>;
   convert: any;
+  displayedColumns = ['data', 'hora', 'entrada', 'origem', 'saida', 'destino', 'taxa'];
   data: Date;
+  dataSource: MatTableDataSource<Object> = new MatTableDataSource(JSON.parse(localStorage.getItem('dados') || '{}'));
   entrada: number;
   resultado: number;
-  moedaOrigem = ['USD', 'United States Dollar'];
-  moedaDestino = ["BRL, Brazilian Real"];
-
-  constructor(private convertService: ConverterService, private listService: ListService) { }
+  moedaOrigem: Moeda = { code: 'USD', description: 'United States Dollar'};
+  moedaDestino: Moeda = { code: 'BRL', description: 'Brazilian Real' };
+ 
+  constructor(private convertService: ConverterService, private listService: ListService, public dialog: MatDialog) { }
+  @ViewChild(MatSort) matSort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   ngOnInit() { this.fetchAPIConvert(); this.fetchListSymbols(); }
   fetchAPIConvert() {
     this.convertService.getConvert().subscribe(s => {
       this.convert = s;
       this.data = s.date;
+      console.log(this.data);
+      this.dataSource.sort = this.matSort;
+      this.dataSource.paginator = this.paginator;
       this.entrada = s.query.amount;
       this.resultado = s.result;
+
     });
   }
   fetchListSymbols() {
@@ -34,11 +46,11 @@ export class CoinConverterComponent implements OnInit {
     });
   }
   changeNameOrigem(code: string, nome: string) {
-    this.moedaOrigem = [code, nome];
+    this.moedaOrigem = {code: code, description: nome};
     this.convertService.codeFrom = code;
   }
   changeNameDestino(code: string, nome: string) {
-    this.moedaDestino = [code, nome];;
+    this.moedaDestino = {code: code, description: nome};
     this.convertService.codeTo = code;
 
   }
@@ -46,14 +58,44 @@ export class CoinConverterComponent implements OnInit {
     let toggleMoeda = this.moedaOrigem;
     this.moedaOrigem = this.moedaDestino;
     this.moedaDestino = toggleMoeda;
-    this.convertService.codeFrom = this.moedaOrigem[0];
-    this.convertService.codeTo = this.moedaDestino[0];
+    this.convertService.codeFrom = this.moedaOrigem.code;
+    this.convertService.codeTo = this.moedaDestino.code;
   }
-  calc($event: any) {
+  valorEntrada($event: any) {
     this.convertService.valueAmount = $event.target.value;
   }
   converter() {
-    this.fetchAPIConvert();
-    this.fetchAPIConvert();
+    if (this.convertService.valueAmount > 0) {
+      this.fetchAPIConvert();
+      this.armazenar();
+    }
+  }
+  select($event: any){
+    $event.target.select()
+  }
+  armazenar() {
+    const dados = {
+      data: new Date(),
+      hora: `${new Date().getHours()}:${new Date().getMinutes()}`,
+      entrada: this.convertService.valueAmount,
+      saida: this.resultado,
+      origem: this.moedaOrigem,
+      destino: this.moedaDestino,
+      taxa: this.resultado / this.convertService.valueAmount
+    }
+    var conversoes = localStorage.getItem("dados") && dados.entrada > 0 ? JSON.parse(localStorage.getItem("dados") || '{}') : [];
+    conversoes.push(dados);
+    localStorage.setItem("dados", JSON.stringify(conversoes));
+    this.dataSource = new MatTableDataSource(JSON.parse(localStorage.getItem('dados') || '{}'));
+  }
+  apagarHistorico() {
+    localStorage.removeItem("dados");
+  }
+  openDialogLimpar() {
+    const dialogRef = this.dialog.open(DialogLimparComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 }

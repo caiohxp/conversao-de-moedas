@@ -55,3 +55,22 @@ body {
 .mdc-text-field{
     margin-bottom: -1.25em !important;
 }
+input[type="text"], input[type="number"]{
+    color: var(--base) !important;
+}
+.mat-elevation-z8{
+    background-color: var(--c2);
+    border: 1px solid var(--base);
+  }
+  .mdc-data-table__header-cell, .mdc-data-table__cell{
+    color: var(--base);
+    border-color: var(--base);
+  }
+  .mat-mdc-paginator{
+    background-color: var(--c2);
+    color: var(--base);
+    border: solid 1px var(--base);
+  }
+  .mat-sort-header-arrow{
+    color: var(--base);
+  }

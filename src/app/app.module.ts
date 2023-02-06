@@ -20,7 +20,10 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatDatepicker, MatDatepickerModule} from '@angular/material/datepicker';
 import {MatCardModule} from '@angular/material/card';
 import {MatMenuModule} from '@angular/material/menu';
+import {MatSelectModule} from '@angular/material/select';
+import {MatDialogModule} from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DialogLimparComponent } from './template/coin-converter/dialog-limpar/dialog-limpar.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HeaderComponent,
     HomeComponent,
     CoinListComponent,
-    CoinConverterComponent
+    CoinConverterComponent,
+    DialogLimparComponent
   ],
   imports: [
     BrowserModule,
@@ -45,6 +49,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatRadioModule,
     MatCardModule,
     MatMenuModule,
+    MatSelectModule,
+    MatDialogModule,
     BrowserAnimationsModule,
     FormsModule
   ],
