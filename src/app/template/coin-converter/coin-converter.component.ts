@@ -21,23 +21,26 @@ export class CoinConverterComponent implements OnInit {
   dataSource: MatTableDataSource<Object> = new MatTableDataSource(JSON.parse(localStorage.getItem('dados') || '{}'));
   entrada: number;
   resultado: number;
+  conversao: boolean = false;
   moedaOrigem: Moeda = { code: 'USD', description: 'United States Dollar'};
   moedaDestino: Moeda = { code: 'BRL', description: 'Brazilian Real' };
  
   constructor(private convertService: ConverterService, private listService: ListService, public dialog: MatDialog) { }
   @ViewChild(MatSort) matSort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+
   ngOnInit() { this.fetchAPIConvert(); this.fetchListSymbols(); }
+
   fetchAPIConvert() {
     this.convertService.getConvert().subscribe(s => {
       this.convert = s;
       this.data = s.date;
-      console.log(this.data);
-      this.dataSource.sort = this.matSort;
-      this.dataSource.paginator = this.paginator;
       this.entrada = s.query.amount;
       this.resultado = s.result;
-
+      this.dataSource.sort = this.matSort;
+      this.dataSource.paginator = this.paginator;
+      if(this.conversao)
+        this.armazenar();
     });
   }
   fetchListSymbols() {
@@ -66,8 +69,8 @@ export class CoinConverterComponent implements OnInit {
   }
   converter() {
     if (this.convertService.valueAmount > 0) {
+      this.conversao = true
       this.fetchAPIConvert();
-      this.armazenar();
     }
   }
   select($event: any){
@@ -75,21 +78,18 @@ export class CoinConverterComponent implements OnInit {
   }
   armazenar() {
     const dados = {
-      data: new Date(),
+      data: this.data,
       hora: `${new Date().getHours()}:${new Date().getMinutes()}`,
-      entrada: this.convertService.valueAmount,
+      entrada: this.entrada,
       saida: this.resultado,
       origem: this.moedaOrigem,
       destino: this.moedaDestino,
-      taxa: this.resultado / this.convertService.valueAmount
+      taxa: this.convert.info.rate
     }
     var conversoes = localStorage.getItem("dados") && dados.entrada > 0 ? JSON.parse(localStorage.getItem("dados") || '{}') : [];
     conversoes.push(dados);
     localStorage.setItem("dados", JSON.stringify(conversoes));
     this.dataSource = new MatTableDataSource(JSON.parse(localStorage.getItem('dados') || '{}'));
-  }
-  apagarHistorico() {
-    localStorage.removeItem("dados");
   }
   openDialogLimpar() {
     const dialogRef = this.dialog.open(DialogLimparComponent);

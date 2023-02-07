@@ -1,7 +1,7 @@
 <section class="p-4">
   <div class="container main-container p-3 flex-column d-flex">
     <div class="title m-3">
-      <h1 class="fs-2">Conversor</h1>
+      <h1 class="fs-2 text-center"><mat-icon fontIcon="attach_money"></mat-icon> Conversor <mat-icon fontIcon="attach_money"></mat-icon></h1>
     </div>
     <div class="row gy-4 p-3 justify-content-center">
       <div class="conversor-content col-md-8 pt-3 pb-3 d-flex justify-content-center row rounded">
@@ -73,7 +73,7 @@
       </ng-container>
 
       <ng-container matColumnDef="entrada">
-        <th mat-header-cell *matHeaderCellDef> Entrada</th>
+        <th mat-header-cell *matHeaderCellDef> Entrada  </th>
         <td mat-cell *matCellDef="let d">$ {{d.entrada | number:'1.2-2'}} {{d.origem.code}} </td>
       </ng-container>
 
@@ -83,8 +83,8 @@
       </ng-container>
 
       <ng-container matColumnDef="saida">
-        <th mat-header-cell mat-sort-header *matHeaderCellDef> Valor Convertido</th>
-        <td mat-cell class="text-center" *matCellDef="let d">$ {{d.saida | number:'1.2-2'}} {{d.destino.code}} </td>
+        <th mat-header-cell mat-sort-header *matHeaderCellDef>Valor Convertido</th>
+        <td mat-cell *matCellDef="let d">$ {{d.saida | number:'1.2-2'}} {{d.destino.code}} </td>
       </ng-container>
       <ng-container matColumnDef="destino">
         <th mat-header-cell *matHeaderCellDef> Moeda Destino</th>
@@ -92,7 +92,7 @@
       </ng-container>
       <ng-container matColumnDef="taxa">
         <th mat-header-cell *matHeaderCellDef> Taxa de Cotação</th>
-        <td mat-cell class="text-center" *matCellDef="let d"> {{d.taxa}} </td>
+        <td mat-cell *matCellDef="let d"> {{d.taxa}} </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

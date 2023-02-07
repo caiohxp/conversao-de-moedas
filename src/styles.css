@@ -11,7 +11,7 @@
     --base: #E3EDF5;
 }
 
-[data-bs-theme="white"]{
+[data-bs-theme="white"] {
     color: var(--base);
     border-color: var(--base);
 }
@@ -52,25 +52,38 @@ body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
-.mdc-text-field{
+
+.mdc-text-field {
     margin-bottom: -1.25em !important;
 }
-input[type="text"], input[type="number"]{
+
+input[type="text"],
+input[type="number"] {
     color: var(--base) !important;
 }
-.mat-elevation-z8{
+
+.mat-elevation-z8 {
     background-color: var(--c2);
     border: 1px solid var(--base);
-  }
-  .mdc-data-table__header-cell, .mdc-data-table__cell{
+}
+
+.mdc-data-table__header-cell,
+.mdc-data-table__cell {
     color: var(--base);
     border-color: var(--base);
-  }
-  .mat-mdc-paginator{
+}
+
+.mat-mdc-paginator {
     background-color: var(--c2);
     color: var(--base);
     border: solid 1px var(--base);
-  }
-  .mat-sort-header-arrow{
+}
+
+.mat-sort-header-arrow {
     color: var(--base);
-  }
+}
+
+td,
+th {
+    text-align: center;
+}

@@ -2,8 +2,12 @@
     transform: rotate(90deg);
 }
 .main-container{
-    width: 60rem;
+    width: 70rem;
 }
 .conversor-content{
     border: solid 3px var(--base);
+}
+td,
+th {
+    text-align: center;
 }
