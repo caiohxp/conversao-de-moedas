@@ -82,8 +82,3 @@ input[type="number"] {
 .mat-sort-header-arrow {
     color: var(--base);
 }
-
-td,
-th {
-    text-align: center;
-}

@@ -7,6 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogLimparComponent } from './dialog-limpar/dialog-limpar.component';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-coin-converter',
@@ -16,12 +17,13 @@ import { DialogLimparComponent } from './dialog-limpar/dialog-limpar.component';
 export class CoinConverterComponent implements OnInit {
   arraySymbols: Array<Moeda>;
   convert: any;
-  displayedColumns = ['data', 'hora', 'entrada', 'origem', 'saida', 'destino', 'taxa'];
+  displayedColumns = ['data', 'hora', 'entrada', 'origem', 'saida', 'destino', 'taxa', 'excluir'];
   data: Date;
   dataSource: MatTableDataSource<Object> = new MatTableDataSource(JSON.parse(localStorage.getItem('dados') || '{}'));
   entrada: number;
   resultado: number;
   conversao: boolean = false;
+  resultadodollar: number;
   moedaOrigem: Moeda = { code: 'USD', description: 'United States Dollar'};
   moedaDestino: Moeda = { code: 'BRL', description: 'Brazilian Real' };
  
@@ -32,6 +34,9 @@ export class CoinConverterComponent implements OnInit {
   ngOnInit() { this.fetchAPIConvert(); this.fetchListSymbols(); }
 
   fetchAPIConvert() {
+    this.convertService.getConvertToUSD().subscribe(s => {
+      this.resultadodollar = s.result;
+    })
     this.convertService.getConvert().subscribe(s => {
       this.convert = s;
       this.data = s.date;
@@ -78,15 +83,23 @@ export class CoinConverterComponent implements OnInit {
   }
   armazenar() {
     const dados = {
+      id: Number,
       data: this.data,
-      hora: `${new Date().getHours()}:${new Date().getMinutes()}`,
+      hora: `${new Date().getHours()}h${new Date().getMinutes()}`,
       entrada: this.entrada,
+      valoralto: false,
       saida: this.resultado,
       origem: this.moedaOrigem,
       destino: this.moedaDestino,
       taxa: this.convert.info.rate
     }
     var conversoes = localStorage.getItem("dados") && dados.entrada > 0 ? JSON.parse(localStorage.getItem("dados") || '{}') : [];
+    dados.id = conversoes.length;
+    console.log(dados);
+    if(this.convertService.codeFrom === "USD" && dados.entrada > 10000)
+      dados.valoralto = true
+    else if(this.resultadodollar > 10000)
+      dados.valoralto = true
     conversoes.push(dados);
     localStorage.setItem("dados", JSON.stringify(conversoes));
     this.dataSource = new MatTableDataSource(JSON.parse(localStorage.getItem('dados') || '{}'));
@@ -97,5 +110,12 @@ export class CoinConverterComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
+  }
+  apagarItem(d: number){
+    let local = JSON.parse(localStorage.getItem("dados") || '{}');
+    let localFiltered = local.filter(l => l.id !== d);
+    
+    localStorage.setItem("dados", JSON.stringify(localFiltered));
+    window.location.reload()
   }
 }

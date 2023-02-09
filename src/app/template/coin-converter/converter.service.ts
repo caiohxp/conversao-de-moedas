@@ -14,4 +14,7 @@ export class ConverterService {
   getConvert(): Observable<any>{
     return this.http.get(`https://api.exchangerate.host/convert?from=${this.codeFrom}&to=${this.codeTo}&amount=${this.valueAmount}`);
   }
+  getConvertToUSD(): Observable<any>{
+    return this.http.get(`https://api.exchangerate.host/convert?from=${this.codeFrom}&to=USD&amount=${this.valueAmount}`);
+  }
 } 
