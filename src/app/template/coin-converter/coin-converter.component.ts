@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
 import { ConverterService } from './converter.service';
 import { ListService } from '../coin-list/list.service';
 import { Moeda } from 'src/app/model/moeda';
@@ -14,7 +14,7 @@ import { filter } from 'rxjs';
   templateUrl: './coin-converter.component.html',
   styleUrls: ['./coin-converter.component.css']
 })
-export class CoinConverterComponent implements OnInit {
+export class CoinConverterComponent implements OnInit, OnDestroy {
   arraySymbols: Array<Moeda>;
   convert: any;
   displayedColumns = ['data', 'hora', 'entrada', 'origem', 'saida', 'destino', 'taxa', 'excluir'];
@@ -24,15 +24,19 @@ export class CoinConverterComponent implements OnInit {
   resultado: number;
   conversao: boolean = false;
   resultadodollar: number;
-  moedaOrigem: Moeda = { code: 'USD', description: 'United States Dollar'};
+  static idDados: number = -1;
+  moedaOrigem: Moeda = { code: 'USD', description: 'United States Dollar' };
   moedaDestino: Moeda = { code: 'BRL', description: 'Brazilian Real' };
- 
+
   constructor(private convertService: ConverterService, private listService: ListService, public dialog: MatDialog) { }
   @ViewChild(MatSort) matSort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit() { this.fetchAPIConvert(); this.fetchListSymbols(); }
-
+  ngOnDestroy(): void {
+    this.dataSource.sort = this.matSort;
+    this.dataSource.paginator = this.paginator;
+  }
   fetchAPIConvert() {
     this.convertService.getConvertToUSD().subscribe(s => {
       this.resultadodollar = s.result;
@@ -42,9 +46,7 @@ export class CoinConverterComponent implements OnInit {
       this.data = s.date;
       this.entrada = s.query.amount;
       this.resultado = s.result;
-      this.dataSource.sort = this.matSort;
-      this.dataSource.paginator = this.paginator;
-      if(this.conversao)
+      if (this.conversao)
         this.armazenar();
     });
   }
@@ -54,11 +56,11 @@ export class CoinConverterComponent implements OnInit {
     });
   }
   changeNameOrigem(code: string, nome: string) {
-    this.moedaOrigem = {code: code, description: nome};
+    this.moedaOrigem = { code: code, description: nome };
     this.convertService.codeFrom = code;
   }
   changeNameDestino(code: string, nome: string) {
-    this.moedaDestino = {code: code, description: nome};
+    this.moedaDestino = { code: code, description: nome };
     this.convertService.codeTo = code;
 
   }
@@ -78,7 +80,7 @@ export class CoinConverterComponent implements OnInit {
       this.fetchAPIConvert();
     }
   }
-  select($event: any){
+  select($event: any) {
     $event.target.select()
   }
   armazenar() {
@@ -96,26 +98,22 @@ export class CoinConverterComponent implements OnInit {
     var conversoes = localStorage.getItem("dados") && dados.entrada > 0 ? JSON.parse(localStorage.getItem("dados") || '{}') : [];
     dados.id = conversoes.length;
     console.log(dados);
-    if(this.convertService.codeFrom === "USD" && dados.entrada > 10000)
+    if (this.convertService.codeFrom === "USD" && dados.entrada > 10000)
       dados.valoralto = true
-    else if(this.resultadodollar > 10000)
+    else if (this.resultadodollar > 10000)
       dados.valoralto = true
     conversoes.push(dados);
     localStorage.setItem("dados", JSON.stringify(conversoes));
     this.dataSource = new MatTableDataSource(JSON.parse(localStorage.getItem('dados') || '{}'));
   }
-  openDialogLimpar() {
+  openDialogLimpar(id?: number) {
+    console.log(id);
+
+    id != undefined ? CoinConverterComponent.idDados = id : CoinConverterComponent.idDados = -1;
     const dialogRef = this.dialog.open(DialogLimparComponent);
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
-  }
-  apagarItem(d: number){
-    let local = JSON.parse(localStorage.getItem("dados") || '{}');
-    let localFiltered = local.filter(l => l.id !== d);
-    
-    localStorage.setItem("dados", JSON.stringify(localFiltered));
-    window.location.reload()
   }
 }
