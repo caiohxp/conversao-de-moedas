@@ -15,8 +15,7 @@ export class DialogLimparComponent {
   deletarItem(){
     let local = JSON.parse(localStorage.getItem("dados") || '{}');
     let localFiltered = local.filter(l => l.id !== this.idDados);
-    
-    localStorage.setItem("dados", JSON.stringify(localFiltered));
+    localFiltered.length === 0? localStorage.removeItem("dados") : localStorage.setItem("dados", JSON.stringify(localFiltered));
     window.location.reload()
   }
 }

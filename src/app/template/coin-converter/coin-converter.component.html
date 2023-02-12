@@ -6,10 +6,11 @@
     <div class="row gy-4 p-3 justify-content-center">
       <div class="conversor-content col-md-8 pt-3 pb-3 d-flex justify-content-center row rounded">
         <div class="row align-items-center justify-content-center col-md-12">
-          <mat-form-field class="col-md-6" (click)="select($event)" appearance="outline">
+          <mat-form-field class="col-md-6" floatLabel="always" (click)="select($event)" appearance="outline">
             <mat-icon aria-hidden="false" fontIcon="attach_money"
               matPrefix></mat-icon>
-            <input matInput type="number" value="{{entrada | number: '1.2-2'}}" (keyup)="valorEntrada($event)">
+              <span matTextSuffix>{{moedaOrigem.code}}</span>
+            <input matInput type="number" value="{{entrada}}" (keyup)="valorEntrada($event)">
             <mat-label>From</mat-label>
           </mat-form-field>
           <mat-form-field class="col-md-6" appearance="fill">
@@ -24,9 +25,9 @@
           </mat-form-field>
         </div>
         <div class="row justify-content-center col-md-12">
-          <div class="col-md-6 d-flex align-items-center">
-            <mat-label class="me-2">Data da Cotação:</mat-label>
-            <input mat-input type="date" value="{{data}}">
+          <div class="col-md-6 d-flex align-items-center justify-content-evenly">
+            <mat-label>Taxa de Conversão: </mat-label>
+            <p style="margin: 0px">{{taxa}}</p>
           </div>
           <div class="col-md-6 mb-3 mt-3 d-flex justify-content-center">
             <button class="btnToggle" mat-mini-fab color="primary" (click)="toggle()"><mat-icon aria-hidden="false"
@@ -34,9 +35,10 @@
           </div>
         </div>
         <div class="row justify-content-center align-items-center">
-          <mat-form-field class="col-md-6" appearance="outline">
+          <mat-form-field class="col-md-6" floatLabel="always" appearance="outline">
             <mat-icon aria-hidden="false" fontIcon="attach_money"
               matPrefix></mat-icon>
+              <span matTextSuffix>{{moedaDestino.code}}</span>
             <input matInput disabled value="{{resultado}}" type="number">
             <mat-label>To</mat-label>
           </mat-form-field>

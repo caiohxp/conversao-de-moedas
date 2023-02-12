@@ -7,7 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogLimparComponent } from './dialog-limpar/dialog-limpar.component';
-import { filter } from 'rxjs';
+import { combineLatest, filter } from 'rxjs';
 
 @Component({
   selector: 'app-coin-converter',
@@ -19,36 +19,49 @@ export class CoinConverterComponent implements OnInit, OnDestroy {
   convert: any;
   displayedColumns = ['data', 'hora', 'entrada', 'origem', 'saida', 'destino', 'taxa', 'excluir'];
   data: Date;
-  dataSource: MatTableDataSource<Object> = new MatTableDataSource(JSON.parse(localStorage.getItem('dados') || '{}'));
+  storage = localStorage.getItem("dados");
+  arrayStorage = JSON.parse(this.storage || '{}')
+  dataSource: MatTableDataSource<Object> = new MatTableDataSource(this.arrayStorage);
+  lastConvert = this.arrayStorage[this.arrayStorage.length-1];
+  moedaOrigem: Moeda = this.storage? this.lastConvert.origem : { code: 'USD', description: 'United States Dollar' };
+  moedaDestino: Moeda = this.storage? this.lastConvert.destino : { code: 'BRL', description: 'Brazilian Real' };
   entrada: number;
+  taxa: number;
   resultado: number;
   conversao: boolean = false;
   resultadodollar: number;
   static idDados: number = -1;
-  moedaOrigem: Moeda = { code: 'USD', description: 'United States Dollar' };
-  moedaDestino: Moeda = { code: 'BRL', description: 'Brazilian Real' };
 
   constructor(private convertService: ConverterService, private listService: ListService, public dialog: MatDialog) { }
   @ViewChild(MatSort) matSort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  ngOnInit() { this.fetchAPIConvert(); this.fetchListSymbols(); }
+  ngOnInit() { 
+    console.log(this.arrayStorage);
+    
+    this.convertService.codeFrom = this.moedaOrigem.code;
+    this.convertService.codeTo = this.moedaDestino.code;
+    this.convertService.valueAmount = this.storage? this.lastConvert.entrada : 1;
+    this.fetchAPIConvert(); 
+    this.fetchListSymbols(); }
   ngOnDestroy(): void {
-    this.dataSource.sort = this.matSort;
-    this.dataSource.paginator = this.paginator;
   }
   fetchAPIConvert() {
-    this.convertService.getConvertToUSD().subscribe(s => {
-      this.resultadodollar = s.result;
-    })
-    this.convertService.getConvert().subscribe(s => {
-      this.convert = s;
-      this.data = s.date;
-      this.entrada = s.query.amount;
-      this.resultado = s.result;
+    let currencyConvert = this.convertService.getConvert();
+    let usdConvert = this.convertService.getConvertToUSD();
+    combineLatest(usdConvert,currencyConvert).subscribe(([u,c]) => {
+      this.resultadodollar = u.result;
+      this.convert = c;
+      this.data = c.date;
+      this.entrada = c.query.amount;
+      this.convertService.valueAmount = this.entrada;
+      this.taxa = c.info.rate;
+      this.resultado = c.result;
       if (this.conversao)
         this.armazenar();
-    });
+      this.dataSource.sort = this.matSort;
+      this.dataSource.paginator = this.paginator;
+    })
   }
   fetchListSymbols() {
     this.listService.getList().subscribe(l => {
@@ -95,7 +108,8 @@ export class CoinConverterComponent implements OnInit, OnDestroy {
       destino: this.moedaDestino,
       taxa: this.convert.info.rate
     }
-    var conversoes = localStorage.getItem("dados") && dados.entrada > 0 ? JSON.parse(localStorage.getItem("dados") || '{}') : [];
+    let storage = localStorage.getItem("dados");
+    var conversoes = storage && dados.entrada > 0 ? JSON.parse(storage || '{}') : [];
     dados.id = conversoes.length;
     console.log(dados);
     if (this.convertService.codeFrom === "USD" && dados.entrada > 10000)
@@ -107,8 +121,6 @@ export class CoinConverterComponent implements OnInit, OnDestroy {
     this.dataSource = new MatTableDataSource(JSON.parse(localStorage.getItem('dados') || '{}'));
   }
   openDialogLimpar(id?: number) {
-    console.log(id);
-
     id != undefined ? CoinConverterComponent.idDados = id : CoinConverterComponent.idDados = -1;
     const dialogRef = this.dialog.open(DialogLimparComponent);
 
