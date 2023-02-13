@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CoinConverterComponent } from './coin-converter.component';
-import { Moeda } from 'src/app/model/moeda';
 
 @Injectable({
   providedIn: 'root'

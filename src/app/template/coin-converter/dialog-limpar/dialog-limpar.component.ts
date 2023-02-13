@@ -13,8 +13,8 @@ export class DialogLimparComponent {
     window.location.reload();
   }
   deletarItem(){
-    let local = JSON.parse(localStorage.getItem("dados") || '{}');
-    let localFiltered = local.filter(l => l.id !== this.idDados);
+    const local = JSON.parse(localStorage.getItem("dados") || '{}');
+    const localFiltered = local.filter(l => l.id !== this.idDados);
     localFiltered.length === 0? localStorage.removeItem("dados") : localStorage.setItem("dados", JSON.stringify(localFiltered));
     window.location.reload()
   }

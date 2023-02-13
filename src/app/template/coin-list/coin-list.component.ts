@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ListService } from './list.service';
+import { MatSort } from '@angular/material/sort';
 import { Moeda } from 'src/app/model/moeda';
-import { MatSort, MatSortHeader } from '@angular/material/sort';
 
 @Component({
   selector: 'app-coin-list',
@@ -13,7 +13,7 @@ import { MatSort, MatSortHeader } from '@angular/material/sort';
 export class CoinListComponent implements AfterViewInit {
 
   displayedColumns = ['code', 'description'];
-  dataSource: MatTableDataSource<any>;
+  dataSource: MatTableDataSource<Moeda>;
   constructor(private listService: ListService) {
   }
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -23,10 +23,11 @@ export class CoinListComponent implements AfterViewInit {
   }
   fetchList(){
     this.listService.getList().subscribe(s => {
-      this.dataSource = new MatTableDataSource(Object.values(s.symbols));
+      let arraySymbols: Array<Moeda> = Object.values(s.symbols);
+      arraySymbols = arraySymbols.filter(f => f.code !== 'MRO' && f.code !== 'VEF');
+      this.dataSource = new MatTableDataSource(arraySymbols);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.matSort;
-      console.log(Object.values(s.symbols));
     });
   }
   filtrarMoedas($event: any){

@@ -7,28 +7,27 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogLimparComponent } from './dialog-limpar/dialog-limpar.component';
-import { combineLatest, filter } from 'rxjs';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-coin-converter',
   templateUrl: './coin-converter.component.html',
   styleUrls: ['./coin-converter.component.css']
 })
-export class CoinConverterComponent implements OnInit, OnDestroy {
+export class CoinConverterComponent implements OnInit, OnDestroy, AfterViewInit {
   arraySymbols: Array<Moeda>;
-  convert: any;
   displayedColumns = ['data', 'hora', 'entrada', 'origem', 'saida', 'destino', 'taxa', 'excluir'];
   data: Date;
   storage = localStorage.getItem("dados");
   arrayStorage = JSON.parse(this.storage || '{}')
   dataSource: MatTableDataSource<Object> = new MatTableDataSource(this.arrayStorage);
-  lastConvert = this.arrayStorage[this.arrayStorage.length-1];
-  moedaOrigem: Moeda = this.storage? this.lastConvert.origem : { code: 'USD', description: 'United States Dollar' };
-  moedaDestino: Moeda = this.storage? this.lastConvert.destino : { code: 'BRL', description: 'Brazilian Real' };
+  lastConvert = this.arrayStorage[this.arrayStorage.length - 1];
+  moedaOrigem: Moeda = this.storage ? this.lastConvert.origem : { code: 'USD', description: 'United States Dollar' };
+  moedaDestino: Moeda = this.storage ? this.lastConvert.destino : { code: 'BRL', description: 'Brazilian Real' };
   entrada: number;
   taxa: number;
   resultado: number;
-  conversao: boolean = false;
+  isConverted: boolean = false;
   resultadodollar: number;
   static idDados: number = -1;
 
@@ -36,28 +35,31 @@ export class CoinConverterComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort) matSort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  ngOnInit() { 
+  ngOnInit() {
     console.log(this.arrayStorage);
-    
+
     this.convertService.codeFrom = this.moedaOrigem.code;
     this.convertService.codeTo = this.moedaDestino.code;
-    this.convertService.valueAmount = this.storage? this.lastConvert.entrada : 1;
-    this.fetchAPIConvert(); 
-    this.fetchListSymbols(); }
+    this.convertService.valueAmount = this.storage ? this.lastConvert.entrada : 1;
+    this.fetchAPIConvert();
+    this.fetchListSymbols();
+  }
+  ngAfterViewInit(): void {
+
+  }
   ngOnDestroy(): void {
   }
   fetchAPIConvert() {
-    let currencyConvert = this.convertService.getConvert();
-    let usdConvert = this.convertService.getConvertToUSD();
-    combineLatest(usdConvert,currencyConvert).subscribe(([u,c]) => {
+    const currencyConvert = this.convertService.getConvert();
+    const usdConvert = this.convertService.getConvertToUSD();
+    combineLatest(usdConvert, currencyConvert).subscribe(([u, c]) => {
       this.resultadodollar = u.result;
-      this.convert = c;
       this.data = c.date;
       this.entrada = c.query.amount;
       this.convertService.valueAmount = this.entrada;
       this.taxa = c.info.rate;
       this.resultado = c.result;
-      if (this.conversao)
+      if (this.isConverted)
         this.armazenar();
       this.dataSource.sort = this.matSort;
       this.dataSource.paginator = this.paginator;
@@ -66,6 +68,7 @@ export class CoinConverterComponent implements OnInit, OnDestroy {
   fetchListSymbols() {
     this.listService.getList().subscribe(l => {
       this.arraySymbols = Object.values(l.symbols);
+      this.arraySymbols = this.arraySymbols.filter(f => f.code != 'MRO' && f.code !== 'VEF');
     });
   }
   changeNameOrigem(code: string, nome: string) {
@@ -78,7 +81,7 @@ export class CoinConverterComponent implements OnInit, OnDestroy {
 
   }
   toggle() {
-    let toggleMoeda = this.moedaOrigem;
+    const toggleMoeda = this.moedaOrigem;
     this.moedaOrigem = this.moedaDestino;
     this.moedaDestino = toggleMoeda;
     this.convertService.codeFrom = this.moedaOrigem.code;
@@ -89,7 +92,7 @@ export class CoinConverterComponent implements OnInit, OnDestroy {
   }
   converter() {
     if (this.convertService.valueAmount > 0) {
-      this.conversao = true
+      this.isConverted = true
       this.fetchAPIConvert();
     }
   }
@@ -106,10 +109,10 @@ export class CoinConverterComponent implements OnInit, OnDestroy {
       saida: this.resultado,
       origem: this.moedaOrigem,
       destino: this.moedaDestino,
-      taxa: this.convert.info.rate
+      taxa: this.taxa
     }
-    let storage = localStorage.getItem("dados");
-    var conversoes = storage && dados.entrada > 0 ? JSON.parse(storage || '{}') : [];
+    const storage = localStorage.getItem("dados");
+    const conversoes = storage && dados.entrada > 0 ? JSON.parse(storage || '{}') : [];
     dados.id = conversoes.length;
     console.log(dados);
     if (this.convertService.codeFrom === "USD" && dados.entrada > 10000)
