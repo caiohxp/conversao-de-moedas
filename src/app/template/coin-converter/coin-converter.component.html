@@ -86,7 +86,7 @@
 
       <ng-container matColumnDef="saida">
         <th mat-header-cell mat-sort-header *matHeaderCellDef>Valor Convertido</th>
-        <td mat-cell *matCellDef="let d"><mat-icon fontIcon="priority_high" *ngIf="d.valoralto" alt="alo" matSuffix></mat-icon>$ {{d.saida | number:'1.2-2'}} {{d.destino.code}} </td>
+        <td mat-cell *matCellDef="let d"><mat-icon fontIcon="priority_high" *ngIf="d.valoralto" title="Valor maior que 10000" alt="alo" matSuffix></mat-icon>$ {{d.saida | number:'1.2-2'}} {{d.destino.code}} </td>
       </ng-container>
       <ng-container matColumnDef="destino">
         <th mat-header-cell *matHeaderCellDef> Moeda Destino</th>

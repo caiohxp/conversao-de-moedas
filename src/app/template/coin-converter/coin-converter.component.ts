@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ConverterService } from './converter.service';
 import { ListService } from '../coin-list/list.service';
 import { Moeda } from 'src/app/model/moeda';
@@ -14,7 +14,7 @@ import { combineLatest } from 'rxjs';
   templateUrl: './coin-converter.component.html',
   styleUrls: ['./coin-converter.component.css']
 })
-export class CoinConverterComponent implements OnInit, OnDestroy, AfterViewInit {
+export class CoinConverterComponent implements OnInit {
   arraySymbols: Array<Moeda>;
   displayedColumns = ['data', 'hora', 'entrada', 'origem', 'saida', 'destino', 'taxa', 'excluir'];
   data: Date;
@@ -36,18 +36,11 @@ export class CoinConverterComponent implements OnInit, OnDestroy, AfterViewInit 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit() {
-    console.log(this.arrayStorage);
-
     this.convertService.codeFrom = this.moedaOrigem.code;
     this.convertService.codeTo = this.moedaDestino.code;
     this.convertService.valueAmount = this.storage ? this.lastConvert.entrada : 1;
     this.fetchAPIConvert();
     this.fetchListSymbols();
-  }
-  ngAfterViewInit(): void {
-
-  }
-  ngOnDestroy(): void {
   }
   fetchAPIConvert() {
     const currencyConvert = this.convertService.getConvert();
